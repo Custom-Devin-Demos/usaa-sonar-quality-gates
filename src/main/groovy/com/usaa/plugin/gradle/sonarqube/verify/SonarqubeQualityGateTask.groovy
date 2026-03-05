@@ -55,6 +55,10 @@ class SonarqubeQualityGateTask extends SonarqubeBaseTask {
                 status = client.getScanStatus(this.projectKey)
             }
 
+            if (status == ScanStatus.FAILED) {
+                throw new QualityGateFailedException(sprintf('SonarQube scan failed for project %s. Please check the SonarQube server logs.', this.projectKey))
+            }
+
             QualityGateStatus gateStatus = client.getQualityGateStatus(this.projectKey)
             if (QualityGateStatus.ERROR == gateStatus) {
                 def encodedKey = URLEncoder.encode(this.projectKey, "UTF-8")

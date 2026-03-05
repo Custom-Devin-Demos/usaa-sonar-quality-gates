@@ -11,20 +11,34 @@ class Helpers {
         return null
     }
 
+    /**
+     * Retrieves the properties map from the sonarqube task.
+     * Newer versions of the sonarqube plugin (4.x+) use MapProperty instead of Map,
+     * so we need to call .get() on the MapProperty to retrieve the underlying Map.
+     */
+    private static Map<String, Object> getPropertiesMap(ISonarQubeTask sqt) {
+        def props = sqt.properties
+        if (props instanceof Map) {
+            return props
+        }
+        // Handle Gradle MapProperty (sonarqube plugin 4.x+)
+        return props.get()
+    }
+
     static String getServerUrl(ISonarQubeTask sqt) {
-        return sqt.properties.get('sonar.host.url')
+        return getPropertiesMap(sqt).get('sonar.host.url')
     }
 
     static String getProjectKey(ISonarQubeTask sqt) {
-        return sqt.properties.get('sonar.projectKey')
+        return getPropertiesMap(sqt).get('sonar.projectKey')
     }
 
     static String getBranch(ISonarQubeTask sqt) {
-        return sqt.properties.get('sonar.branch')
+        return getPropertiesMap(sqt).get('sonar.branch')
     }
 
     static String getProjectName(ISonarQubeTask sqt) {
-        return sqt.properties.get('sonar.projectName')
+        return getPropertiesMap(sqt).get('sonar.projectName')
     }
 
     static boolean sonarPluginExists(Project project) {

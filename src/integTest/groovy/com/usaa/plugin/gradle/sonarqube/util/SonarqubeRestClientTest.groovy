@@ -1,6 +1,6 @@
 package com.usaa.plugin.gradle.sonarqube.util
 
-import groovyx.net.http.HttpResponseException
+import groovyx.net.http.HttpException
 import spock.lang.Specification
 import spock.lang.Subject
 
