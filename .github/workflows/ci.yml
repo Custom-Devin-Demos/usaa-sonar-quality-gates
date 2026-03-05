@@ -92,7 +92,7 @@ jobs:
         run: |
           unset SONARQUBE_SCANNER_PARAMS
           unset SONARQUBE_SKIPPED
-          ./gradlew applyQualityGate sonarqube verifySonarqubeQualityGates -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN
+          ./gradlew applyQualityGate sonarqube verifySonarqubeQualityGates --stacktrace -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN
 
       - name: Add strict gate condition
         run: |
@@ -101,7 +101,7 @@ jobs:
       - name: Run failing quality gate test (expected failure)
         working-directory: test-project
         run: |
-          ! ./gradlew applyQualityGate sonarqube verifySonarqubeQualityGates -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN
+          ! ./gradlew applyQualityGate sonarqube verifySonarqubeQualityGates --stacktrace -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN
 
   deploy:
     name: Publish Plugin

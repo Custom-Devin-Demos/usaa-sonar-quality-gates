@@ -16,7 +16,8 @@ class SonarqubeRestClient {
     enum ScanStatus {
         QUEUED,
         IN_PROGRESS,
-        COMPLETE
+        COMPLETE,
+        FAILED
     }
 
     enum QualityGateStatus {
@@ -139,8 +140,7 @@ class SonarqubeRestClient {
         http.post {
             request.uri.path = '/api/qualitygates/select'
             request.headers[AUTH_HEADER_KEY] = authHeader
-            request.contentType = 'application/json'
-            request.body = [
+            request.uri.query = [
                     "projectKey": projectKey,
                     "gateId": gateId,
             ]
@@ -161,8 +161,7 @@ class SonarqubeRestClient {
         http.post {
             request.uri.path = '/api/qualityprofiles/add_project'
             request.headers[AUTH_HEADER_KEY] = authHeader
-            request.contentType = 'application/json'
-            request.body = [
+            request.uri.query = [
                     "projectKey": projectKey,
                     "profileName": profileName,
                     "language": language
@@ -185,8 +184,7 @@ class SonarqubeRestClient {
         http.post {
             request.uri.path = '/api/projects/create'
             request.headers[AUTH_HEADER_KEY] = authHeader
-            request.contentType = 'application/json'
-            request.body = [
+            request.uri.query = [
                     "project": projectKey,
                     "name": projectName
             ]
