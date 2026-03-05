@@ -1,6 +1,6 @@
 ## Sonar Quality Gate Plugin ##
 
-[![Build Status](https://travis-ci.org/usaa/sonar-quality-gates.svg?branch=master)](https://travis-ci.org/usaa/sonar-quality-gates)
+[![CI](https://github.com/usaa/sonar-quality-gates/actions/workflows/ci.yml/badge.svg)](https://github.com/usaa/sonar-quality-gates/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 This Gradle plugin will use the SonarQube API to verify the state of a given project's quality gate(s).
@@ -15,17 +15,22 @@ If the project does not already exist within SonarQube, it will be created.
 | 6.3+ | 3.+ |
 | 5.6 - 7.0 | 1.+ |
 
-#### Usage:
-```
-// build.gradle
-buildscript {
-  dependencies {
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
-    classpath "com.usaa.plugin.gradle:sonarqube-quality-gates:3.0.0"
-  }
+#### Usage (Kotlin DSL):
+```kotlin
+// build.gradle.kts
+plugins {
+    id("org.sonarqube") version "4.4.1.3373"
+    id("com.usaa.sonar-quality-gates") version "3.0.0"
 }
-apply plugin: 'org.sonarqube'
-apply plugin: 'sonarqube-quality-gates'
+```
+
+#### Usage (Groovy DSL):
+```groovy
+// build.gradle
+plugins {
+    id 'org.sonarqube' version '4.4.1.3373'
+    id 'com.usaa.sonar-quality-gates' version '3.0.0'
+}
 ```
 
 #### Gradle Tasks
@@ -42,15 +47,30 @@ workflow, including the sonar scan.
 
 #### Optional Configuration:
 Any of the following options are available. You can override one or all as required.
-```
+
+**Kotlin DSL:**
+```kotlin
 sonarqubeQualityGate {
-  sleep '1000' // the amount of time to sleep between api calls while scan is queued. Time is in milliseconds. Default: 1000
-  maxWait '1800000' // the amount of time to wait for scan to complete before failing. Time is in milliseconds. Default: 1800000 (30min)
-  gate 'Sonar way' // override default gate
-  profile 'Sonar way' // override default profile
-  username ''
-  password ''
-  apiKey ''
+    sleep = "1000" // the amount of time to sleep between api calls while scan is queued. Time is in milliseconds. Default: 1000
+    maxWait = "1800000" // the amount of time to wait for scan to complete before failing. Time is in milliseconds. Default: 1800000 (30min)
+    gate = "Sonar way" // override default gate
+    profile = "Sonar way" // override default profile
+    username = ""
+    password = ""
+    apiKey = ""
+}
+```
+
+**Groovy DSL:**
+```groovy
+sonarqubeQualityGate {
+    sleep '1000'
+    maxWait '1800000'
+    gate 'Sonar way'
+    profile 'Sonar way'
+    username ''
+    password ''
+    apiKey ''
 }
 ```
 
@@ -64,7 +84,7 @@ profile 'Sonar way'
 ```
 
 #### Permissions
-Permissions can be set via the `sonarqubeQualityGate` closure or via system properties. Note that precedence is important for determining which value is used.
+Permissions can be set via the `sonarqubeQualityGate` block or via system properties. Note that precedence is important for determining which value is used.
 
 **Username**
 1. Closure
